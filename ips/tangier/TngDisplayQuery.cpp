@@ -58,6 +58,7 @@ uint32_t DisplayQuery::queryNV12Format()
     return HAL_PIXEL_FORMAT_NV12;
 }
 
+#ifdef INTEL_SUPPORT_HDMI_PRIMARY
 bool DisplayQuery::forceFbScaling(int device)
 {
     // RGB planes don't support scaling. Panel fitter can be used to scale frame buffer to device's resolution
@@ -82,6 +83,12 @@ bool DisplayQuery::forceFbScaling(int device)
 
     return false;
 }
+#else
+bool DisplayQuery::forceFbScaling(int)
+{
+    return false;
+}
+#endif
 
 } // namespace intel
 } // namespace android

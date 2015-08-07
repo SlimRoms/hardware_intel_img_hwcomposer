@@ -603,11 +603,13 @@ void AnnOverlayPlane::setTransform(int transform)
 // in portrait mode, video will show distortion.
 bool AnnOverlayPlane::isSettingRotBitAllowed()
 {
+#ifdef INTEL_SUPPORT_HDMI_PRIMARY
     uint32_t width = mSrcCrop.w;
 
     if ((width > 960 && width <= 1024) &&
             (mTransform == 0 || mTransform == HAL_TRANSFORM_ROT_180))
         return false;
+#endif
     return true;
 }
 

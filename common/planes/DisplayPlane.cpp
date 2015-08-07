@@ -111,6 +111,7 @@ void DisplayPlane::setPosition(int x, int y, int w, int h)
 {
     ALOGTRACE("Position = %d, %d - %dx%d", x, y, w, h);
 
+#ifdef INTEL_SUPPORT_HDMI_PRIMARY
     if (mForceScaling) {
         // set in assignToDevice
         mPosition.x = (int) (((float)x/DEFAULT_DRM_FB_WIDTH)*mDisplayWidth);
@@ -125,6 +126,7 @@ void DisplayPlane::setPosition(int x, int y, int w, int h)
 
         return;
     }
+#endif
 
     if (mPosition.x != x || mPosition.y != y ||
         mPosition.w != w || mPosition.h != h) {
@@ -358,8 +360,14 @@ bool DisplayPlane::assignToDevice(int disp)
     if (mForceScaling) {
         mModeInfo.hdisplay = mDisplayWidth;
         mModeInfo.vdisplay = mDisplayHeight;
-
     }
+
+#ifndef INTEL_SUPPORT_HDMI_PRIMARY
+    mDisplayCrop.x = 0;
+    mDisplayCrop.y = 0;
+    mDisplayCrop.w = mDisplayWidth;
+    mDisplayCrop.h = mDisplayHeight;
+#endif
 
     return true;
 }
