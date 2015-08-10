@@ -23,6 +23,10 @@
 #include <DisplayQuery.h>
 #include <hal_public.h>
 
+#ifndef FORCE_ONLY_ONE_RGB_LAYER
+#define FORCE_ONLY_ONE_RGB_LAYER 0
+#endif
+
 namespace android {
 namespace intel {
 
@@ -291,7 +295,7 @@ bool HwcLayerList::initialize()
             // by default use GPU composition
             hwcLayer->setType(HwcLayer::LAYER_FB);
             mFBLayers.add(hwcLayer);
-            if (!DisplayQuery::forceFbScaling(mDisplayIndex)) {
+            if (! FORCE_ONLY_ONE_RGB_LAYER && !DisplayQuery::forceFbScaling(mDisplayIndex)) {
                 if (checkCursorSupported(hwcLayer)) {
                     mCursorCandidates.add(hwcLayer);
                 } else if (checkRgbOverlaySupported(hwcLayer)) {
